@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 # this class will derive the mode from the given dataset and variables given that needs
 # to be imputed
 class MissingImputer(BaseEstimator, TransformerMixin):
-    def __init__(self, variables=None):
+    def __init__(self, variables=None) -> None:
         # this is to check if the variables passed to the object is a list of variables name
         # likely will be, since we will call the list of variables from config file
         # if variables passed not list but string, change to list, else self.variables = var
@@ -18,10 +18,11 @@ class MissingImputer(BaseEstimator, TransformerMixin):
             self.variables = variables
 
     # input to be a dataframe
-    def fit(self, X, y = None):
+    def fit(self, X: pd.DataFrame, y = None) -> "MissingImputer":
         return self
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+        """Apply the transformation back to dataframe"""
         X = X.copy()
         for num_var in self.variables:
             #create two additional columns, binary missing indicator
@@ -34,7 +35,7 @@ class num_imputer(BaseEstimator, TransformerMixin):
     this class takes a list of variables that has empty rows and fit with their own mode
 
     """
-    def __init__(self, variables=None):
+    def __init__(self, variables=None) -> None:
         # this is to check if the variables passed to the object is a list of variables name
         # likely will be, since we will call the list of variables from config file
         # if variables passed not list but string, change to list, else self.variables = var
@@ -44,7 +45,7 @@ class num_imputer(BaseEstimator, TransformerMixin):
             self.variables = variables
 
     # input to be a dataframe
-    def fit(self, X, y = None):
+    def fit(self, X: pd.DataFrame, y :pd.Series = None) -> "num_imputer":
         # CREATE an empty dict to store the num_vars with empty rows
         # and also their mode value
         # fitted NUM_IMPUTE_DICT
@@ -53,7 +54,7 @@ class num_imputer(BaseEstimator, TransformerMixin):
             self.NUM_IMPUTE_DICT[num_var] = X[num_var].median()
         return self
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         X = X.copy()
 
         for num_var in self.variables:
@@ -69,17 +70,17 @@ class cat_feature_engineer(BaseEstimator, TransformerMixin):
     """
     this class takes in a list of variables and extract only the first letter and drops the rest of the variable value
     """
-    def __init__(self, variables = None):
+    def __init__(self, variables = None) -> None:
         if not isinstance(variables, list):
             self.variables = [variables]
         else:
             self.variables = variables
 
-    def fit(self, X, y = None):
+    def fit(self, X : pd.DataFrame, y :pd.Series = None) -> "cat_feature_engineer":
         # needs to have this regardless to be able to be placed in the pipeline
         return self
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         X = X.copy()
         for cat_var in self.variables:
             X[cat_var] = X[cat_var].str[0]
@@ -92,18 +93,18 @@ class cat_imputer(BaseEstimator, TransformerMixin):
     this class takes in a list of categorical variables and fill in the missing rows with "Missing"
     """
 
-    def __init__(self, variables = None):
+    def __init__(self, variables = None) -> None:
         if not isinstance(variables, list):
             self.variables = [variables]
         else:
             self.variables = variables
 
 
-    def fit(self, X, y = None):
+    def fit(self, X: pd.DataFrame, y : pd.Series= None) ->"cat_imputer" :
         # is there anything to fit on the data for our transformer?
         return self
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         X = X.copy()
         for cat_var in self.variables:
             X[cat_var].fillna("Missing",inplace = True)
@@ -114,7 +115,7 @@ class remove_rare_labels(BaseEstimator,TransformerMixin):
     this class takes in categorical variables and find the most frequent labels in them.
 
     """
-    def __init__(self,variables = None,percent = 0.05):
+    def __init__(self,variables = None,percent : int = 0.05) -> None:
         self.percent = percent
         if not isinstance(variables, list):
             self.variables = [variables]
@@ -122,7 +123,7 @@ class remove_rare_labels(BaseEstimator,TransformerMixin):
             self.variables = variables
 
 
-    def fit(self, X, y = None):
+    def fit(self, X: pd.DataFrame, y :pd.Series= None) -> "remove_rare_labels":
         X = X.copy()
         self.frequent_label_dict = {}
         # Use dictionary to represent sex : ["male", "female"]
@@ -132,7 +133,7 @@ class remove_rare_labels(BaseEstimator,TransformerMixin):
             self.frequent_label_dict[cat_var]= list(tmp[tmp > self.percent].index)
         return self
 
-    def transform(self, X):
+    def transform(self, X:pd.DataFrame) -> pd.DataFrame:
         X = X.copy()
         for cat_var in self.variables:
             X[cat_var] = np.where(X[cat_var].isin(self.frequent_label_dict[cat_var]),X[cat_var],"Rare")
@@ -143,19 +144,19 @@ class one_hot_encode(BaseEstimator, TransformerMixin):
     """One hot encodes categorical variables
     """
 
-    def __init__(self, variables = None):
+    def __init__(self, variables = None) -> None:
         if not isinstance(variables, list):
             self.variables = [variables]
         else:
             self.variables = variables
 
-    def fit(self, X, y = None):
+    def fit(self, X: pd.DataFrame, y : pd.Series = None) -> pd.DataFrame:
         self.dummies = pd.get_dummies(X[self.variables],drop_first = True).columns
         # is there anything to fit on the data for our transformer?
         return self
 
 
-    def transform(self, X):
+    def transform(self, X:pd.DataFrame) -> pd.DataFrame:
         X = X.copy()
         X = pd.concat([X,pd.get_dummies(X[self.variables],drop_first = True)], axis = 1)
         X.drop(labels = self.variables, axis = 1, inplace = True)

@@ -1,6 +1,6 @@
 # this will contain the main pipeline
-import preprocessors as pf
-import config
+from classification_model.preprocessing import preprocessors as pf
+from classification_model.config import config
 #==================================
 import pandas as pd
 from sklearn.pipeline import Pipeline

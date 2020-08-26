@@ -4,9 +4,10 @@ import classification_model
 # data
 PACKAGE_ROOT = pathlib.Path(classification_model.__file__).resolve().parent
 # PACKAGE_ROOT is now the absolute file path to immediate parent of config -- > classification_model
-TRAINING_DATA_FILE = "titanic.csv"
+TRAINING_DATA_FILE = PACKAGE_ROOT/"datasets"/"titanic.csv"
 PIPELINE_NAME = "logistic_regression"
 
+TRAIN_MODEL_DIR = PACKAGE_ROOT / "trained_models"
 
 
 
