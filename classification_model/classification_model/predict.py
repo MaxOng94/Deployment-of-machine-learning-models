@@ -1,7 +1,7 @@
 from classification_model.config import config
 
 from classification_model.preprocessing.data_management import load_data, load_pipeline
-
+from classification_model.preprocessing.validation import validate_inputs
 
 
 import joblib
@@ -13,10 +13,11 @@ import pandas as pd
 
 # X input to be X_train[0:1] --> this will give us a dataframe type
 # output --> np.ndarray
-def predict(*, input_data) ->dict :
+def predict(*, input_data) ->pd.Series:
     # data becomes a dataframe
     pipe = load_pipeline(file_name = "classification_model.pkl")
-    y_pred = pipe.predict(input_data)
+    validated_input= validate_inputs(input_data)
+    y_pred = pipe.predict(validated_input)
     return y_pred
 
 

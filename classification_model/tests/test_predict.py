@@ -12,7 +12,7 @@ def test_predict():
                                         data[config.TARGET],  # target
                                         test_size=0.2,  # percentage of obs in test set
                                         random_state=0)
-    single_test = X_train
+    single_test = X_test
 
 
     # when
