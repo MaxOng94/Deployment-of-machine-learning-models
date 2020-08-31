@@ -1,0 +1,3 @@
+2020-08-30 19:42:41,873 — classification_model — INFO —save_pipeline:31 — Pipeline is saved:, logistic_regression0.1.0.pkl
+2020-08-30 19:42:55,197 — classification_model — INFO —save_pipeline:31 — Pipeline is saved:, logistic_regression0.1.0.pkl
+2020-08-30 19:43:50,195 — classification_model — INFO —save_pipeline:31 — Pipeline is saved:, logistic_regression0.1.0.pkl

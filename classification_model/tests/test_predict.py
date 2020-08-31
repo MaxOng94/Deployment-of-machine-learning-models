@@ -4,6 +4,7 @@ import numpy as np
 
 from classification_model.preprocessing.data_management import load_data, load_pipeline
 
+
 from sklearn.model_selection import train_test_split
 def test_predict():
     # given
@@ -15,9 +16,9 @@ def test_predict():
     single_test = X_test
 
 
+
     # when
     subject = predict(input_data =single_test )
-
 
     # then
     assert subject is not None

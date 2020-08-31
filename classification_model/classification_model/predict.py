@@ -15,7 +15,7 @@ import pandas as pd
 # output --> np.ndarray
 def predict(*, input_data) ->pd.Series:
     # data becomes a dataframe
-    pipe = load_pipeline(file_name = "classification_model.pkl")
+    pipe = load_pipeline(file_name = "logistic_regression0.1.0.pkl")
     validated_input= validate_inputs(input_data)
     y_pred = pipe.predict(validated_input)
     return y_pred

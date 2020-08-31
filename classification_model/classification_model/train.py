@@ -1,5 +1,6 @@
 from classification_model.config import config
 from classification_model.pipeline import pipe
+from classification_model import __version__ as _version
 
 from classification_model.preprocessing import preprocessors as pf
 from classification_model.preprocessing.data_management import save_pipeline
@@ -10,8 +11,9 @@ from sklearn.model_selection import train_test_split
 
 import joblib
 import pandas as pd
+import logging
 
-
+_logger = logging.getLogger("classification_model")
 
 def run_training() -> None:
     """
